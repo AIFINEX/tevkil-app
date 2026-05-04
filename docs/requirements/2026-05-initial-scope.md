@@ -1,145 +1,359 @@
-# Initial Scope — 2026-05
+# Initial Scope — 2026-05 (BASE Package)
 
 - **Status:** Draft (müşteri onayı bekleniyor)
-- **Hedef sürüm:** v1.0 (MVP — App Store & Google Play yayını)
+- **Hedef sürüm:** v1.0 — Landing + iOS + Android (App Store & Google Play yayını)
+- **Yapı:** 12 ana modül; AVUTAP feature parity + müşteri voice-note çıkarımları (konum tabanlı özellikler)
+
+> **Pricing modeli:** BASE paket = aşağıdaki 12 modül + landing page. AI eşleştirme, e-imza, UYAP entegrasyonu, kurumsal hesap gibi gelişmiş özellikler **ek modül** olarak ayrı kalemde teklif edilir (bkz. [pricing.md](../pricing.md)).
+>
+> **Referans materyaller:**
+> - [competitor-analysis/avutap-feature-inventory.md](../competitor-analysis/avutap-feature-inventory.md) — yazılı envanter
+> - [competitor-analysis/avutap-app-ui-ux.md](../competitor-analysis/avutap-app-ui-ux.md) — 22 ekran üzerinden UI/UX analizi
+> - [competitor-analysis/avutap.com.md](../competitor-analysis/avutap.com.md) — site analizi
+> - [competitor-analysis/tevkil.com.md](../competitor-analysis/tevkil.com.md) — site analizi
+> - [meetings/2026-05-04-customer-voice-note.md](../meetings/2026-05-04-customer-voice-note.md) — müşteri ses kaydı
 
 ## Hedefler
 
-1. Türkiye'deki avukatlar arası **tevkil ağı**nı dijitalleştir.
-2. Üç yüzeyle teslim et: **web landing**, **iOS uygulaması**, **Android uygulaması**.
-3. Kayıt → görevlendirme oluştur → kabul et → tamamla → ödeme zincirini uçtan uca çalıştır.
+1. **AVUTAP feature parity** — pazarda eşit konum
+2. **Konum tabanlı özelliklerle farklılaşma** — "Adliyedeyim" + km mesafesi (müşterinin AVUTAP'ı tercih sebebi)
+3. Üç yüzeyle teslim: **landing**, **iOS**, **Android** (tek React Native codebase)
+4. Avukat → görev oluştur → eşleş → tamamla → ödeme zincirini uçtan uca
 
-## Hedef olmayanlar (MVP'de yok)
+## Hedef olmayanlar (BASE'de yok — Ek modül olarak teklif edilir)
 
-- AI tabanlı eşleştirme algoritması (faz 2)
-- Sesli arama / video görüşme entegrasyonu
-- E-imza entegrasyonu (UYAP, e-Devlet)
-- Hukuk bürosu (çoklu hesap) yönetimi
-- Çok dilli destek (sadece Türkçe başlıyor)
-- Web tarafından görevlendirme oluşturma (sadece mobile MVP'de)
+- AI tabanlı akıllı eşleştirme algoritması
+- E-imza / UYAP entegrasyonu
+- Kurumsal hesap (multi-tenant hukuk bürosu)
+- Çoklu dil desteği (BASE Türkçe-only)
+- Web tarafından görev oluşturma (BASE: sadece mobil)
+- Robot sesli arama (yüksek operasyonel maliyet)
+- Baro Levhası API otomatik doğrulama (BASE'de manuel admin onayı)
+- iyzico/PayTR escrow ödeme (BASE'de manuel IBAN havale)
 
-## 1. Landing Page (web)
+---
 
-| # | Özellik | Açıklama |
+## Modül 1 — Kayıt ve Üyelik Sistemi
+
+### 1.1 Standart Üyelik
+
+| # | Özellik | Detay |
 |---|---|---|
-| L1 | Hero | Ürün vaadi, App Store/Google Play butonları |
-| L2 | Nasıl çalışır | 3-4 adımlı görsel akış (kayıt ol → talep oluştur → eşleş → tamamla) |
-| L3 | Özellikler bölümü | Anahtar özelliklerin kart şeklinde listesi |
-| L4 | İstatistik bandı | Üye sayısı, görevlendirme sayısı, kapsanan adliye sayısı (canlı API'den) |
-| L5 | SSS | En sık 8-10 soru |
-| L6 | İletişim | Form + direkt iletişim bilgileri |
-| L7 | Yasal sayfalar | KVKK, Kullanıcı Sözleşmesi, Çerez Politikası |
-| L8 | SEO | Meta tag, OG image, sitemap, robots.txt |
-| L9 | Analytics | Google Analytics / Plausible kurulumu |
+| M1.1 | Kayıt | E-posta + telefon + **baro sicil no** zorunlu |
+| M1.2 | 2 aşamalı doğrulama | SMS OTP + e-posta magic link |
+| M1.3 | Sicil onayı | Manuel admin onayı (Baro Levhası API entegrasyonu **Ek Modül**) |
+| M1.4 | Profil | Ad-soyad, fotoğraf, baro, sicil no, çalışma şehri (il), uzmanlık alanları (multi-select), IBAN |
+| M1.5 | Profil Doluluk Oranı | Yüzde göstergesi (gamification) — eksik alan kırmızı uyarı |
+| M1.6 | Profil Resmi Yükleme | Crop + max 2MB |
+| M1.7 | Hakkında | Serbest metin (max 500 karakter) |
+| M1.8 | Şifre Değiştir | Eski şifre ile doğrulama |
+| M1.9 | Şifre Kurtarma | E-posta / SMS |
+| M1.10 | KVKK + Kullanıcı Sözleşmesi | Versiyonlu, kayıtta zorunlu onay |
+| M1.11 | 2 kullanıcı tipi | Görev veren + görev alan (aynı kullanıcı her ikisi olabilir) |
+| M1.12 | Mavi Tik (Verified Badge) | Manuel admin onaylı verification rozeti — profil + görev kartlarında görünür |
+| M1.13 | Yetki Belgesi | Avukatlık Kanunu Md. 56 yetki belgesi PDF üretici (template + dinamik doldurma) |
 
-## 2. Mobile App — iOS + Android
+### 1.2 Premium Üyelik (`tevkil-app Pro` — adı netleşecek)
 
-### 2.1 Kayıt & Hesap
-
-| # | Özellik | Açıklama |
+| # | Özellik | Detay |
 |---|---|---|
-| M1 | Kayıt | E-posta + telefon + **baro sicil no** zorunlu |
-| M2 | Sicil doğrulama | İlk sürümde **manuel admin onayı**; faz 2'de Baro API entegrasyonu |
-| M3 | Telefon doğrulama | SMS OTP |
-| M4 | E-posta doğrulama | Magic link |
-| M5 | Şifre kurtarma | E-posta / SMS akışı |
-| M6 | Profil | Ad, soyad, fotoğraf, baro, sicil no, çalışma şehri, uzmanlık alanları, IBAN (ödeme için) |
-| M7 | KVKK / Sözleşme onayı | Kayıtta zorunlu, versiyonlu |
+| M1.14 | Yıllık abonelik | Önerilen ₺2.000–₺2.500/yıl (müşteri ile netleşecek) |
+| M1.15 | Sınırsız görev kabul | Free tier'da limitli, premium'da sınırsız |
+| M1.16 | SMS bildirimi | Premium-only (free'de e-mail) |
+| M1.17 | Acil görev oluşturma | Premium-only |
+| M1.18 | Yıl sonu uzatma garantisi | 1 yıl içinde **<3 görev** alındıysa abonelik 1 yıl ücretsiz uzatılır (AVUTAP modeli — müşteri teyitli) |
+| M1.19 | Eski üye indirimi | Promo kuponları, sadakat indirimi |
+| M1.20 | Mesafeli Satış + Ön Bilgilendirme | Onay checkbox + arşivlenir |
 
-### 2.2 Görevlendirme (Tevkil) Akışı
+> Robot sesli arama → BASE'de yok, **Ek Modül**
 
-| # | Özellik | Açıklama |
+---
+
+## Modül 2 — Görev Oluşturma (Görev Veren)
+
+| # | Alan | Detay |
 |---|---|---|
-| M8 | Görev oluştur | İl, adliye, iş tipi (duruşma / haciz / dosya inceleme / tebligat), tarih-saat, ücret teklifi, notlar, dosya ek (max 3 PDF) |
-| M9 | Görev listesi (feed) | Bulunduğu ilde / favori illerinde açık görevler — filtreleme: il, iş tipi, ücret aralığı, tarih |
-| M10 | Görev detay | Tüm bilgi + "Kabul Et" / "Geç" |
-| M11 | Görev kabul | Tek tıkla kabul; oluşturana bildirim |
-| M12 | Görev iptal | Sınırlı koşullarla (kabul öncesi serbest, sonrası onaya tabi) |
-| M13 | Görevlerim | Sekmeler: Aktif / Tamamlanan / İptal |
-| M14 | Tamamla | Görev sahibi onaylar, sistem ödemeyi serbest bırakır |
-| M15 | Sorun bildir | Görevle ilgili anlaşmazlık → admin'e açılır |
+| M2.1 | İl (Görev Yeri) | 81 il dropdown — referans veri DB'de |
+| M2.2 | Adliye (Görev Adliyesi) | Seçili ile bağlı, ~596 adliye dropdown |
+| M2.3 | **Adliye Dışı toggle** | Aktifse harita üzerinden konum + adres girişi |
+| M2.4 | Görev Tipi (Yapılacak Görev) | Ceza Duruşması Katılımı, Hukuk Duruşması Katılımı, İcra Dairesi İşlemleri, Savcılık İşlemleri, Dosya İnceleme, Kalem İşleri, Tebligat, Diğer |
+| M2.5 | Bütçe (Görev Bütçeniz) | Kademeli sabit tutar (örn. 600₺ / 700₺ / 1100₺ / 1250₺ / 1500₺) — admin'den yönetilir |
+| M2.6 | Tarih + saat | Date+time picker; saat opsiyonel |
+| M2.7 | Açıklama | Serbest metin, max 1000 karakter |
+| M2.8 | **Hazır Açıklama Şablonları** | Görev tipi başına önceden tanımlı şablonlar (admin'den yönetilir) |
+| M2.9 | İletişim bilgisi guard'ı | Açıklama içinde telefon/e-posta tespit edildiğinde uyarı |
+| M2.10 | Dosya eki | Maks. 3 PDF (eşleşene kadar gizli; eşleşince paylaşılır) |
+| M2.11 | Acil Görev seçeneği | Premium-only checkbox; 15 dk dolmadan başvuru kapanabilir |
 
-### 2.3 İletişim
+---
 
-| # | Özellik | Açıklama |
+## Modül 3 — Görev Listeleri ve Yönetim
+
+### 3.1 Görev Veren Tarafı (3 sekme)
+- Oluşturduğum Görevler (aktif)
+- Seçildiğim Görevler (atama yapılanlar)
+- Tamamlanan Görevler
+
+### 3.2 Görev Alan Tarafı (4 sekme)
+- Bekleyen Görevlerim (başvurulabilir, filtre: il/adliye/tip/bütçe/**km mesafe**)
+- Başvurduğum Görevler (durum: bekliyor/red/kabul)
+- Başvurmadığım Görevler (gözardı edilen)
+- Tamamladığım Görevler
+
+### 3.3 Görev İptal Bildirimi
+| # | Özellik | Detay |
 |---|---|---|
-| M16 | In-app mesajlaşma | Görev başına thread; metin + dosya |
-| M17 | Push notification | Yeni görev, kabul, mesaj, ödeme onayı |
-| M18 | E-posta bildirimi | Kullanıcı tercihiyle açılır/kapanır |
+| M3.1 | İptal sebebi | Dropdown (önceden tanımlı: müvekkil iptali, sağlık, planlama hatası, mücbir sebep, diğer) |
+| M3.2 | Yıllık iptal hakkı | 5 hak/yıl (admin parametre) |
+| M3.3 | Geçmiş iptal listesi | Kullanıcı + admin görür |
+| M3.4 | Hak aşımı yaptırımı | Kısıtlamalar sistemine yansır (Modül 11'de detay) |
 
-### 2.4 Ödeme
+---
 
-| # | Özellik | Açıklama |
+## Modül 4 — Eşleştirme, Konum ve Bildirim Sistemi
+
+### 4.1 Eşleştirme (BASE — manuel başvuru tabanlı)
+| # | Özellik | Detay |
 |---|---|---|
-| M19 | Ücret modeli | Görev başı sabit ücret + platform komisyonu (örn. ₺30 — pricing'de netleşir) |
-| M20 | Ödeme sağlayıcı | iyzico / PayTR (kredi kartı + banka transferi) |
-| M21 | Cüzdan / bakiye | Kabul eden avukatın kazanımları biriken cüzdan, çekim talebi → IBAN'a havale |
-| M22 | Fatura | Yarı-otomatik (e-arşiv entegrasyonu opsiyonel — gerekirse faz 2) |
+| M4.1 | Adliye/il bazlı bildirim | Görev oluşunca o adliyedeki "görev alma açık" üyelere bildirim |
+| M4.2 | 15 dk başvuru penceresi | Tüm avukatlar 15 dk içinde başvurur |
+| M4.3 | Manuel atama | 15 dk dolunca görev veren listeden seçer |
+| M4.4 | Sürenin uzatılması | Görev veren manuel olarak 15 dk daha açabilir |
+| M4.5 | Anonim başvuru görüntüleme | Görev veren, başvuranın **sadece adının baş harfi + uzmanlık + Hakkında**'sını görür; profil resmi + tam isim **atanana kadar gizli** |
 
-### 2.5 Değerlendirme & Güven
+> AI/algoritmik otomatik eşleştirme = **Ek Modül**.
+> "Adil dağılım" puanlama (kullanıcı performansına göre) BASE'de basit, gelişmiş algoritma Ek Modül.
 
-| # | Özellik | Açıklama |
+### 4.2 Konum Tabanlı Özellikler ⭐ (müşterinin AVUTAP'ı seçme sebebi)
+
+| # | Özellik | Detay |
 |---|---|---|
-| M23 | Yıldız puanı | İki taraf birbirini puanlar (1-5) |
-| M24 | Yorum | Görev sonrası kısa yorum |
-| M25 | Profil rozetleri | "Hızlı yanıt", "tamamlama oranı" gibi hesaplanmış göstergeler |
+| M4.6 | **"Adliyedeyim" toggle** | Avukat fiziksel olarak adliyede ise GPS doğrulamalı toggle açar; o anda gelen acil görevlere **öncelik atanır** |
+| M4.7 | Mesafe gösterimi | Görev kartında "X km uzaklıkta" bilgisi (görev konumu vs avukatın kayıtlı konumu) |
+| M4.8 | Konum tabanlı sıralama | Bekleyen görevler listesi mesafeye göre sıralanabilir |
+| M4.9 | GPS izinleri yönetimi | Kayıtta açıklayıcı izin akışı (iOS + Android) |
+| M4.10 | Fake-location önleme | Mock location detection (Android) + jailbreak/root tespiti |
 
-### 2.6 Genel
-
-| # | Özellik | Açıklama |
+### 4.3 Bildirim Kanalları
+| Kanal | Tier | Sağlayıcı |
 |---|---|---|
-| M26 | Çevrimdışı temel destek | Liste cache'i; mesaj gönderme online gerekli |
-| M27 | Push token yönetimi | FCM (Android) + APNs (iOS) |
-| M28 | Crash reporting | Sentry / Firebase Crashlytics |
-| M29 | Analytics | Etkinlik takibi (kayıt, görev oluşturma, kabul, tamamlama) |
+| Push (iOS/Android) | Tüm | FCM + APNs |
+| E-mail | Tüm | Postmark / SMTP |
+| SMS | Premium | NetGSM / iletimerkezi |
+| Robot arama | — | **Ek Modül** |
 
-## 3. Backend & Admin Panel
+### 4.4 Bildirim Tetikleyicileri
+- Yeni görev (alıcı), başvuru (veren), atama (alıcı), red (alıcı), tamamlama, ödeme onayı, hatırlatma, "Adliyedeyim" eşleşmesi
 
-| # | Özellik | Açıklama |
+### 4.5 Bildirim Ayarları
+- Kullanıcı kanal bazında aç/kapa
+- Görev tipi bazında opt-out ("**Görev Almak İstemediğiniz Kategoriler**")
+- Adliye bazında opt-in (sadece seçili adliyelerden bildirim)
+- "Görev Alma" durumu: Açık / Kapalı toggle (varsayılan açık)
+
+---
+
+## Modül 5 — Ödeme ve Bakiye Sistemi
+
+### 5.1 Bakiye Görüntüleme
+| # | Özellik | Detay |
 |---|---|---|
-| B1 | REST API | Mobile + web frontends'i besler; OpenAPI dokümanlı |
-| B2 | Auth | JWT; refresh token; 2FA opsiyonel |
-| B3 | RBAC | Roles: avukat, admin, support |
-| B4 | Admin panel | Kullanıcılar, görevler, ödemeler, raporlar, sicil onayı |
-| B5 | İstatistik dashboard | Aktif kullanıcı, açık görev, tamamlanan görev, gelir |
-| B6 | Loglama / audit | Hassas işlem logları (ödeme, profil değişikliği) |
-| B7 | Backup | Günlük DB snapshot |
-| B8 | Bildirim altyapısı | Push, email (SMTP / Postmark), SMS (NetGSM / vb.) |
+| M5.1 | Mevcut bakiye | Kazanılmış − çekilmiş |
+| M5.2 | Bekleyen bakiye | Henüz tamamlanmayan görevlerden |
+| M5.3 | Geçmiş işlem listesi | Görev ID, tarih, tutar, durum |
 
-## 4. Teknoloji önerileri (RFC 0001'de detaylanacak)
-
-| Katman | Öneri | Alternatif |
+### 5.2 Ödeme Talebi (Çekim)
+| # | Özellik | Detay |
 |---|---|---|
-| Mobile | **React Native** (tek codebase, iOS+Android paralel teslim) | Native (Swift + Kotlin) — daha yüksek maliyet |
-| Backend | Node.js (NestJS) **ya da** Python (FastAPI) | — |
-| DB | PostgreSQL | — |
-| Push | Firebase Cloud Messaging | — |
-| Hosting | AWS / Hetzner | — |
-| Web landing | Next.js (statik export) | — |
+| M5.4 | Alıcı ad-soyad | Default profilden |
+| M5.5 | Banka adı | Dropdown (referans listesi, admin'den yönetilir) |
+| M5.6 | IBAN | TR + 24 hane validation |
+| M5.7 | Tutar | Min ₺100, max bakiye |
+| M5.8 | Talep statüsü | Bekliyor / onaylandı / red |
+| M5.9 | Son ödemelerim listesi | Tüm geçmiş havale kayıtları |
 
-## 5. Geliştirme aşamaları
+### 5.3 Ödeme Akışı
+- **BASE: Manuel IBAN havale**, admin onaylı (T+1 mesai içi gönderim)
+- Otomatik EFT/havale entegrasyonu = **Ek Modül**
+- Görev başı kazanç modeli: müşteri ile netleşecek (sabit ücret / yüzde komisyon / abonelik)
+
+### 5.4 Görev Veren Ödeme Akışı (BASE: dışarıda)
+- Görev verenden alınan ücret platforma değil, doğrudan tevkil edilen avukata gider (TEVKİL modeli)
+- Veya: platform escrow (iyzico/PayTR) = **Ek Modül**
+- Karar: RFC 0001'de finansal akış netleşir
+
+---
+
+## Modül 6 — İş Ortaklığı Programı
+
+| # | Özellik | Detay |
+|---|---|---|
+| M6.1 | Davet Et Kazan | Referral linki + paylaş + kopyala butonları; doğrulanmış üye başına bonus (örn. ₺10-₺50) |
+| M6.2 | Görev Ver Kazan | Görev oluşturma teşviki (örn. yeni AvutaPro üye bağlandığında ₺20) |
+| M6.3 | Ortaklık bakiyesi | Drawer'da prominent gösterilir (`İş Ortaklığı: 0 ₺`) |
+| M6.4 | Davet edilen tracking | Kim kimi getirdi (admin görür) |
+| M6.5 | Ödeme talebi | Modül 5 ile aynı akış |
+
+---
+
+## Modül 7 — Ana Sayfa ve Canlı Akış
+
+| # | Bileşen | Detay |
+|---|---|---|
+| M7.1 | Hoş geldin başlığı | "{Ad}, hoş geldin!" + günsel selam ("İyi Sabahlar / Akşamlar / Haftalar") |
+| M7.2 | Duyuru bandı | Admin'den yayınlanan banner (örn. "E-Barobirlik uyarısı"); kapatılabilir |
+| M7.3 | Premium upsell card | Eski üyelere kişiselleştirilmiş indirim |
+| M7.4 | + Yeni Görev Ver CTA | Yeşil prominent buton (FAB ayrıca bottom nav'da) |
+| M7.5 | Görevlendirme Geçmişim | Mini chart/widget (haftalık/aylık görev sayısı) |
+| M7.6 | Bekleyen / Başvurduğum özet kutusu | Expandable card |
+| M7.7 | Oluşturduğum görev özeti | Expandable card |
+| M7.8 | **Canlı feed** ("Şu an neler oluyor?") | Anonimleştirilmiş aksiyon listesi (Av. **** Görev Oluşturdu / Atama / Seçildi / Tamamladı), 30sn refresh |
+| M7.9 | Arşiv widget | Son 10 atama + tamamlanan görev (bottom nav'da Arşiv sekmesi de var) |
+
+---
+
+## Modül 8 — Uyuşmazlık Masası
+
+| # | Özellik | Detay |
+|---|---|---|
+| M8.1 | Yeni uyuşmazlık formu | Kategori (gecikme, yanlış sonuç, ödeme, davranış), açıklama, dosya |
+| M8.2 | Üst uyarı | "Bilgi almadan kullanmayınız" |
+| M8.3 | Açıklama modal | Eylem öncesi onboarding |
+| M8.4 | Uyuşmazlık listesi | Durum (yeni / inceleniyor / çözüldü / reddedildi) |
+| M8.5 | Karşılıklı ifadeler | Görev veren + alan görür ve cevap atar |
+| M8.6 | Admin moderation | Çözüm sonucu: bakiye iadesi / kullanıcı uyarısı / ban |
+
+---
+
+## Modül 9 — Yardım ve Destek
+
+| # | Özellik | Detay |
+|---|---|---|
+| M9.1 | Nasıl Çalışır? | Kullanım kılavuzu (akordeon FAQ — adliye atama, başvuru, eşleşme, bildirim ayarları, vb.) |
+| M9.2 | İstek/Öneri/Şikayet formu | Kategori, başlık, açıklama, ekran görüntüsü eki |
+| M9.3 | SSS | Admin'den eklenebilir Q&A |
+| M9.4 | İletişim | E-posta + form |
+
+> Live chat = **Ek Modül**
+
+---
+
+## Modül 10 — Mobil Uygulama (iOS + Android)
+
+### 10.1 Genel
+- **iOS native** App Store yayını (min iOS 13.0)
+- **Android native** Google Play yayını (min API 24 / Android 7.0)
+- **Tek codebase: React Native** (alternatif Flutter — RFC 0001'de netleşir)
+
+### 10.2 Tasarım
+- 5 sekmeli bottom nav: Bekleyen | Arşiv | **+ Görev Ver (FAB)** | Davet Et | Ayarlar
+- Drawer menu: 9 madde (Ana Sayfa, Görev İşlemleri, İş Ortaklığı, Görev İptal, Uyuşmazlık, Duyurular, Ayarlar, Nasıl Çalışır?, İstek/Öneri/Şikayet)
+- **Drawer rotating hero** — günsel/sezonsal Türkiye görselleri (kullanıcının iline öncelik)
+- Top bar: hamburger + home + premium upsell pill + bildirim zili + profil avatarı
+- Card-based UI, rounded corners, 12pt grid
+- Renk sistemi: Mavi (primary), Mor (premium), Yeşil (CTA), Sarı (ikincil), Kırmızı (uyarı)
+- Empty state'lerde illüstrasyon + bilgi notu
+
+### 10.3 Teknik
+- Push notification: FCM (Android) + APNs (iOS)
+- Crash reporting: Sentry / Crashlytics
+- Analytics: kayıt, görev oluşturma, kabul, tamamlama
+- Çevrimdışı temel destek (liste cache)
+- GPS izinleri + konum doğruluğu
+
+---
+
+## Modül 11 — Admin Paneli
+
+| # | Özellik | Detay |
+|---|---|---|
+| M11.1 | Web tabanlı | Admin/support rollerine açık |
+| M11.2 | Kullanıcı yönetimi | Liste, filtre, profil görüntüle, sicil onayla, ban, premium tier ata, kullanıcı adına işlem |
+| M11.3 | Mavi Tik onayları | Verification badge başvuru queue + onay/red |
+| M11.4 | **Kısıtlamalar / Yaptırım Sistemi** | Skor: iptal limiti aşımı, geç yanıt, anlaşmazlık → otomatik kısıtlama (görev alma kapatma) + admin manuel ekleyebilir/kaldırabilir |
+| M11.5 | Görev moderasyonu | Tüm görevler, manuel müdahale (iptal, atama değişikliği) |
+| M11.6 | Ödeme talepleri | Bekleyenler listesi, onayla/red, manuel havale işareti, ödeme makbuzu yükleme |
+| M11.7 | İhtilaf yönetimi | Liste, detay, çözüm |
+| M11.8 | İçerik yönetimi | Duyuru banner (yayın + son tarih), Hazır şablonlar, SSS, Drawer hero görselleri |
+| M11.9 | Referans veri yönetimi | İl, adliye, görev tipi, bütçe kademesi, banka listesi |
+| M11.10 | Raporlar | Kullanıcı (kayıt/aktif), görev (oluşturulan/tamamlanan/iptal), gelir (komisyon + abonelik), top performers |
+| M11.11 | Audit log | Hassas işlem logları |
+
+---
+
+## Modül 12 — Halka Açık Sayfalar (Landing + Legal)
+
+### 12.1 Landing
+| # | Bölüm | Detay |
+|---|---|---|
+| M12.1 | Hero | USP + App Store / Google Play butonları |
+| M12.2 | Nasıl çalışır | 3-4 adımlı görsel akış |
+| M12.3 | Özellikler | Anahtar özellikler kart |
+| M12.4 | İstatistikler | Üye, görev, adliye sayıları (canlı API'den) |
+| M12.5 | Müşteri yorumları | Testimonial (Day-1'den 4-6 erken kullanıcı) |
+| M12.6 | SSS | 8-10 soru |
+| M12.7 | İletişim | Form + bilgiler |
+| M12.8 | SEO | Meta, OG image, sitemap, robots.txt |
+| M12.9 | Analytics | Google Analytics / Plausible |
+
+### 12.2 Yasal Sayfalar (zorunlu — premium tier sattığımız için)
+- KVKK Aydınlatma Metni
+- Üyelik Sözleşmesi
+- Gizlilik Politikası / Çerez Politikası
+- **Mesafeli Satış Sözleşmesi**
+- **Ön Bilgilendirme Formu**
+
+---
+
+## Yorumlar ve Puanlama (Modül 1 ile entegre, ayrı modül değil)
+
+| # | Özellik | Detay |
+|---|---|---|
+| MR.1 | Görev sonrası 5 yıldız puan | İki taraflı, görev tamamlanınca |
+| MR.2 | Yorum (max 300 karakter) | Yıldıza ek olarak yazılı geri bildirim |
+| MR.3 | Profil sayfasında ortalama puan | Yıldız + yorum sayısı |
+| MR.4 | Yorum listesi | Profil sekmesi (Hakkında / Yorumlar) |
+| MR.5 | Sahte yorum tespiti | Aynı IP/cihazdan tekrar engellenir |
+
+---
+
+## Geliştirme aşamaları
 
 | Faz | Süre (hafta) | Çıktı |
 |---|---|---|
-| 0. Discovery + tasarım | 2 | Wireframe, UI kit, akış onayı |
-| 1. Backend iskelet + admin | 3 | Auth, kullanıcı, sicil onayı, admin panel |
-| 2. Mobile auth + profil | 2 | Kayıt, login, profil ekranları |
-| 3. Görevlendirme akışı | 3 | Oluştur, listele, kabul, tamamla |
-| 4. Mesajlaşma + bildirim | 2 | In-app mesaj, push, email |
-| 5. Ödeme entegrasyonu | 2 | iyzico, cüzdan, çekim |
-| 6. Landing page | 1 | Tanıtım sitesi |
-| 7. Test + UAT | 2 | QA, müşteri kabul testi |
-| 8. App store yayını | 1 | Apple + Google review süreci |
-| **Toplam** | **~16 hafta** | MVP canlıda |
+| 0. Discovery + tasarım | 4 | Wireframe, UI kit, ~50 ekranın tasarımı |
+| 1. Backend iskelet + admin core | 4 | Auth, RBAC, sicil onayı, kullanıcı yönetimi, referans veri |
+| 2. Mobile auth + profil + Mavi Tik + premium tier | 3 | Modül 1 |
+| 3. Görev oluşturma + listeler + iptal | 3 | Modül 2 + 3 |
+| 4. Eşleştirme + konum + bildirimler | 3 | Modül 4 (özellikle "Adliyedeyim" + km) |
+| 5. Ödeme + bakiye + ortaklık | 3 | Modül 5 + 6 |
+| 6. Dashboard + canlı feed + uyuşmazlık | 2.5 | Modül 7 + 8 |
+| 7. Yardım/destek + yorumlar/puanlama | 2 | Modül 9 + Yorumlar |
+| 8. Admin tam set + kısıtlamalar sistemi | 3 | Modül 11 |
+| 9. Landing + legal sayfalar | 2 | Modül 12 |
+| 10. Test + UAT | 2.5 | QA + müşteri kabul |
+| 11. App store yayın | 1.5 | Apple + Google review |
+| **Toplam** | **~30 hafta (≈7.5 ay)** | BASE canlıda |
 
-(Süreler 4 kişilik ekip varsayımıyla; pricing.md'de detaylı.)
+5 kişilik ekip varsayımıyla; pricing.md'de detaylı.
 
-## Açık sorular
+---
 
-- [ ] Komisyon modeli? (sabit ücret / yüzde / abonelik)
-- [ ] Logo + marka kimliği bizden mi gelecek, müşteride mevcut mu?
-- [ ] Domain + hosting müşteri mi alacak, biz mi yöneticeğiz?
-- [ ] App Store / Google Play hesapları kimde açılacak (geliştirici hesabı maliyeti)?
-- [ ] Sicil doğrulama Baro API'siyle mi (varsa) yoksa manuel mi başlıyor?
-- [ ] KVKK metinleri / Kullanıcı Sözleşmesi avukat tarafından mı sağlanacak?
-- [ ] Ödeme sağlayıcı tercihi (iyzico / PayTR / Stripe)?
+## Açık sorular (müşteri ile netleşecek)
+
+- [ ] **Görev başına kazanç modeli:** sabit / yüzde / abonelik tabanlı mı?
+- [ ] **Premium tier yıllık fiyatı:** önerilen ₺2.000-₺2.500
+- [ ] **Premium uzatma garantisi koşulu:** 1 yıl <3 görev → 1 yıl uzatma (AVUTAP modeli teyit?)
+- [ ] **Logo + marka kimliği:** müşteride hazır mı, biz mi yapacağız?
+- [ ] **Marka adı ve domain:** tevkil-app placeholder, gerçek isim?
+- [ ] **App Store / Google Play hesapları:** kimde açılacak?
+- [ ] **Komisyon modeli:**
+  - Görev başına sabit (₺30 gibi) mı?
+  - Yüzde komisyon (%5-10) mu?
+  - Tamamen ücretsiz, sadece premium gelirden mi?
+- [ ] **KVKK + sözleşmeler:** avukat olarak müşteri kendi yazacak mı?
+- [ ] **Ödeme sağlayıcı:** iyzico / PayTR / Stripe?
+- [ ] **Görev verenden ücret tahsilatı:** BASE'de var mı? (escrow vs. doğrudan avukatlar arası)
+- [ ] **Robot arama:** Day-1'de yok, ileride istenecek mi?
+- [ ] **Bütçe kademeleri:** AVUTAP'taki gibi (600/700/1100/1250/1500) mi yoksa serbest girdi mi?
+- [ ] **Görev tipi listesi:** Modül 2'de 8 tip — eklenecek/çıkarılacak var mı?
