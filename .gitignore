@@ -1,0 +1,29 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local env
+.env
+.env.local
+*.local
+
+# Build output (placeholders for when code lands)
+dist/
+build/
+out/
+.next/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets
+*.pem
+*.key
