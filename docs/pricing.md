@@ -26,7 +26,7 @@ Türkiye'deki avukatların **şehir/il dışı adliye işleri** için meslektaş
 | # | Modül | Fiyat (TL) |
 |---|---|---:|
 | 0 | Discovery + UX/UI Tasarım | **15.000** |
-| 1 | Kayıt & Üyelik (avukat kaydı, baro doğrulama, profil, premium tier, Mavi Tik, Yetki Belgesi PDF) | **15.000** |
+| 1 | Kayıt & Üyelik (avukat kaydı, **e-posta magic link doğrulama**, **telefon SMS OTP doğrulama**, **NVI TC Kimlik otomatik doğrulama**, **Baro Levhası admin panel kontrolü**, profil, premium tier, Mavi Tik, Yetki Belgesi PDF) | **15.000** |
 | 2 | Görev Oluşturma (form, il/adliye/tip/bütçe/tarih, hazır şablonlar, acil görev) | **12.000** |
 | 3 | Görev Listeleri & İptal | **10.000** |
 | 4 | **Eşleştirme + Konum + Bildirim** (15 dk akış, anonim başvuru, "Adliyedeyim" toggle, km mesafe, push/SMS/email) | **22.000** |
@@ -55,27 +55,6 @@ Türkiye'deki avukatların **şehir/il dışı adliye işleri** için meslektaş
 ✅ **8 hafta hata garantisi** (canlıda ortaya çıkan kritik hataların ücretsiz düzeltilmesi)
 ✅ **6 saatlik kullanım eğitimi** (admin paneli + mobile, online)
 ✅ Teknik dokümantasyon
-
----
-
-## Ek Modüller (Talep Halinde)
-
-| Ek Modül | Fiyat (TL) |
-|---|---:|
-| AI tabanlı akıllı eşleştirme | 12.000 |
-| Robot sesli arama | 8.000 |
-| E-imza entegrasyonu | 10.000 |
-| UYAP entegrasyonu | 18.000 |
-| Baro Levhası API ile otomatik sicil doğrulama | 5.000 |
-| Hukuk bürosu (kurumsal) hesap yönetimi | 22.000 |
-| Otomatik EFT/havale (iyzico/PayTR escrow) | 10.000 |
-| Çoklu dil desteği | 8.000 |
-| Web üzerinden görev oluşturma + yönetim | 15.000 |
-| Live chat (canlı müşteri destek) | 5.000 |
-| Avukat-müvekkil video görüşme | 16.000 |
-| Profesyonel pazarlama videosu | 5.000 |
-
-> Aynı anda **3 ek modül** alınırsa **%10**, **5 ek modül** alınırsa **%15** indirim.
 
 ---
 
@@ -112,19 +91,37 @@ Ek modüller bağımsız olarak %50 ön ödeme + %50 teslim modeliyle ücretlend
 
 ## Müşteriye Ait Sürekli Maliyetler
 
-Geliştirme ücretine **dahil değildir**:
+Geliştirme ücretine **dahil değildir**. Müşteri kendi adına aşağıdaki servisleri yönetir.
 
-| Kalem | Tahmini bedel | Periyot |
+### A. Sabit Aylık Altyapı Maliyeti (kullanım bağımsız)
+
+| Kalem | Aylık (TL) | Açıklama |
+|---|---:|---|
+| Hosting (AWS / Hetzner / DigitalOcean) | 3.000 – 5.000 | Sunucu + veri tabanı + dosya storage |
+| E-posta sağlayıcı (Postmark / Mailgun) | 500 | $15+/ay (10.000 e-posta hedefiyle) |
+| Apple Developer Hesabı (yıllık → aylık çevrim) | 275 | $99/yıl ÷ 12 |
+| Domain `.com.tr` (yıllık → aylık) | 10 | ~₺100/yıl ÷ 12 |
+| Push notification (FCM) | 0 | Ücretsiz |
+| **Toplam Sabit Aylık** | **₺3.785 – ₺5.785** | **(orta tahmin: ~₺4.800/ay)** |
+
+> Tek seferlik: **Google Play Developer hesabı $25** (~₺850, sadece kayıt anında).
+
+### B. Kullanım Bazlı Maliyet (kullanıcı sayısına göre değişir)
+
+| Kalem | Birim fiyat | Örnek |
 |---|---|---|
-| Apple Developer Hesabı | $99 | yıllık |
-| Google Play Developer Hesabı | $25 | tek seferlik |
-| Domain (.com.tr) | ~₺100 | yıllık |
-| Hosting (AWS / Hetzner / DigitalOcean) | ₺3.000 – ₺5.000 | aylık |
-| iyzico / PayTR komisyonu | %1.99 + ₺0.25 | işlem başı |
-| SMS sağlayıcı | ~₺0.10 | mesaj başı |
-| E-posta sağlayıcı | $15+ | aylık |
+| SMS sağlayıcı (NetGSM) | ~₺0.10 / SMS | 1.000 SMS/ay → ~₺100/ay |
+| iyzico / PayTR komisyonu | %1.99 + ₺0.25 / işlem | 500 ödeme × ortalama ₺100 → ~₺1.120/ay |
 
-Aylık destek paketi alınırsa hosting yönetimi pakete dahildir.
+### C. Üç Ölçek Senaryosu — Aylık Toplam Tahmini
+
+| Senaryo | Aktif kullanıcı | SMS / ay | Ödeme / ay | **Aylık Toplam** |
+|---|---:|---:|---:|---:|
+| **Başlangıç** (ilk 3 ay) | ~100 | ~100 SMS | ~10 ödeme | **~₺4.900** |
+| **Büyüme** (6-12. ay) | ~1.000 | ~1.000 SMS | ~200 ödeme | **~₺5.300** |
+| **Olgun** (1.+ yıl) | ~10.000 | ~10.000 SMS | ~2.000 ödeme | **~₺10.500** |
+
+> 💡 **Aylık operasyonel destek paketi alınırsa** hosting yönetimi pakete dahildir → sabit aylık maliyetten **₺3.000-5.000 düşer**.
 
 ---
 

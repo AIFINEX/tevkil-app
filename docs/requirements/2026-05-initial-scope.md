@@ -28,7 +28,6 @@
 - Çoklu dil desteği (BASE Türkçe-only)
 - Web tarafından görev oluşturma (BASE: sadece mobil)
 - Robot sesli arama (yüksek operasyonel maliyet)
-- Baro Levhası API otomatik doğrulama (BASE'de manuel admin onayı)
 - iyzico/PayTR escrow ödeme (BASE'de manuel IBAN havale)
 
 ---
@@ -39,31 +38,33 @@
 
 | # | Özellik | Detay |
 |---|---|---|
-| M1.1 | Kayıt | E-posta + telefon + **baro sicil no** zorunlu |
+| M1.1 | Kayıt | E-posta + telefon + **TC kimlik no** + **baro sicil no** + ad-soyad + doğum yılı zorunlu |
 | M1.2 | 2 aşamalı doğrulama | SMS OTP + e-posta magic link |
-| M1.3 | Sicil onayı | Manuel admin onayı (Baro Levhası API entegrasyonu **Ek Modül**) |
-| M1.4 | Profil | Ad-soyad, fotoğraf, baro, sicil no, çalışma şehri (il), uzmanlık alanları (multi-select), IBAN |
-| M1.5 | Profil Doluluk Oranı | Yüzde göstergesi (gamification) — eksik alan kırmızı uyarı |
-| M1.6 | Profil Resmi Yükleme | Crop + max 2MB |
-| M1.7 | Hakkında | Serbest metin (max 500 karakter) |
-| M1.8 | Şifre Değiştir | Eski şifre ile doğrulama |
-| M1.9 | Şifre Kurtarma | E-posta / SMS |
-| M1.10 | KVKK + Kullanıcı Sözleşmesi | Versiyonlu, kayıtta zorunlu onay |
-| M1.11 | 2 kullanıcı tipi | Görev veren + görev alan (aynı kullanıcı her ikisi olabilir) |
-| M1.12 | Mavi Tik (Verified Badge) | Manuel admin onaylı verification rozeti — profil + görev kartlarında görünür |
-| M1.13 | Yetki Belgesi | Avukatlık Kanunu Md. 56 yetki belgesi PDF üretici (template + dinamik doldurma) |
+| M1.3 | **NVI TC Kimlik doğrulama (otomatik)** | `tckimlik.nvi.gov.tr` SOAP servisiyle TC + ad + soyad + doğum yılı eşleşme kontrolü, kayıt anında otomatik. Eşleşmezse kayıt **reddedilir**. |
+| M1.4 | **Baro Levhası kontrolü (admin paneli üzerinden manuel)** | Resmi public API olmadığı için, NVI'dan onay alan kullanıcı admin queue'suna düşer. Admin panelinde "Baro Levhası'nda Kontrol Et" butonu `e-baro.barobirlik.org.tr`'i yeni sekmede açar; admin gözle doğrular ve onaylar/reddeder. (TBB ile özel API anlaşması yapılırsa Ek Modül olarak otomatikleştirilebilir.) |
+| M1.5 | Hesap durumu akışı | Kayıt → NVI doğrulama → onay bekliyor (admin queue) → admin onaylar → aktif hesap. Her aşamada SMS + e-mail bildirim. |
+| M1.6 | Profil | Fotoğraf, baro, sicil no, çalışma şehri (il), uzmanlık alanları (multi-select), IBAN |
+| M1.7 | Profil Doluluk Oranı | Yüzde göstergesi (gamification) — eksik alan kırmızı uyarı |
+| M1.8 | Profil Resmi Yükleme | Crop + max 2MB |
+| M1.9 | Hakkında | Serbest metin (max 500 karakter) |
+| M1.10 | Şifre Değiştir | Eski şifre ile doğrulama |
+| M1.11 | Şifre Kurtarma | E-posta / SMS |
+| M1.12 | KVKK + Kullanıcı Sözleşmesi | Versiyonlu, kayıtta zorunlu onay |
+| M1.13 | 2 kullanıcı tipi | Görev veren + görev alan (aynı kullanıcı her ikisi olabilir) |
+| M1.14 | Mavi Tik (Verified Badge) | Manuel admin onaylı verification rozeti — profil + görev kartlarında görünür |
+| M1.15 | Yetki Belgesi | Avukatlık Kanunu Md. 56 yetki belgesi PDF üretici (template + dinamik doldurma) |
 
 ### 1.2 Premium Üyelik (`tevkil-app Pro` — adı netleşecek)
 
 | # | Özellik | Detay |
 |---|---|---|
-| M1.14 | Yıllık abonelik | Önerilen ₺2.000–₺2.500/yıl (müşteri ile netleşecek) |
-| M1.15 | Sınırsız görev kabul | Free tier'da limitli, premium'da sınırsız |
-| M1.16 | SMS bildirimi | Premium-only (free'de e-mail) |
-| M1.17 | Acil görev oluşturma | Premium-only |
-| M1.18 | Yıl sonu uzatma garantisi | 1 yıl içinde **<3 görev** alındıysa abonelik 1 yıl ücretsiz uzatılır (AVUTAP modeli — müşteri teyitli) |
-| M1.19 | Eski üye indirimi | Promo kuponları, sadakat indirimi |
-| M1.20 | Mesafeli Satış + Ön Bilgilendirme | Onay checkbox + arşivlenir |
+| M1.16 | Yıllık abonelik | Önerilen ₺2.000–₺2.500/yıl (müşteri ile netleşecek) |
+| M1.17 | Sınırsız görev kabul | Free tier'da limitli, premium'da sınırsız |
+| M1.18 | SMS bildirimi | Premium-only (free'de e-mail) |
+| M1.19 | Acil görev oluşturma | Premium-only |
+| M1.20 | Yıl sonu uzatma garantisi | 1 yıl içinde **<3 görev** alındıysa abonelik 1 yıl ücretsiz uzatılır (AVUTAP modeli — müşteri teyitli) |
+| M1.21 | Eski üye indirimi | Promo kuponları, sadakat indirimi |
+| M1.22 | Mesafeli Satış + Ön Bilgilendirme | Onay checkbox + arşivlenir |
 
 > Robot sesli arama → BASE'de yok, **Ek Modül**
 
