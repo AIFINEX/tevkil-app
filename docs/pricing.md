@@ -38,23 +38,27 @@ Türkiye'deki avukatların **şehir/il dışı adliye işleri** için meslektaş
 | 10 | Mobil Yayın & Altyapı (iOS + Android React Native, push, GPS, App Store + Google Play yayın) | **14.000** |
 | 11 | Admin Paneli (kullanıcı/ödeme/görev moderasyonu, kısıtlamalar sistemi, içerik yönetimi, raporlar) | **17.000** |
 | 12 | Landing + Yasal Sayfalar (tanıtım sitesi, KVKK, Üyelik Sözleşmesi, Mesafeli Satış, Ön Bilgilendirme) | **9.000** |
+| 13 | **Marka Kimliği Paketi** ✨ *(isteğe bağlı, çıkarılabilir)* — marka adı önerileri (3-5 alternatif), logo (3 taslak + 2 revizyon + 4 final versiyon: yatay/dikey/monokrom/renkli), renk paleti, typography, app icon (iOS + Android), mini brand guideline PDF (5-10 sayfa) | **15.000** |
 |   | Test + UAT | **8.000** |
 |   | Proje Yönetimi & Koordinasyon | **7.000** |
-|   | **TOPLAM (KDV hariç)** | **₺170.000** |
-|   | KDV (%20) | ₺34.000 |
-|   | **GENEL TOPLAM (KDV dahil)** | **₺204.000** |
+|   | **TOPLAM (KDV hariç)** | **₺185.000** |
+|   | KDV (%20) | ₺37.000 |
+|   | **GENEL TOPLAM (KDV dahil)** | **₺222.000** |
+
+> **Müşteri kendi marka kimliğini hazır getirirse Modül 13 çıkarılır → Toplam ₺170.000 + KDV (₺204.000 dahil)**
 
 ---
 
 ## BASE Pakete Dahil
 
-✅ Yukarıdaki 15 kalemin tamamı
+✅ Yukarıdaki kalemlerin tamamı (Modül 13 isteğe bağlı, kaldırılabilir)
 ✅ App Store ve Google Play'e ilk yayın (geliştirici hesap kurulum desteği)
-✅ Logo + temel marka kimliği (müşteri sağlamazsa, tek revizyon hakkıyla)
 ✅ Tüm yasal sayfa şablonları (avukat tarafından hukuki onay sonrası)
 ✅ **8 hafta hata garantisi** (canlıda ortaya çıkan kritik hataların ücretsiz düzeltilmesi)
 ✅ **6 saatlik kullanım eğitimi** (admin paneli + mobile, online)
 ✅ Teknik dokümantasyon
+
+> **Not:** Yukarıda listelenmemiş herhangi bir ek modül talep edilirse, ayrıca fiyatlandırılarak bu dokümana eklenir.
 
 ---
 
@@ -68,24 +72,7 @@ Türkiye'deki avukatların **şehir/il dışı adliye işleri** için meslektaş
 | **Plus** | 5.000 | Standart + 24/7 izleme + öncelikli işler + aylık 4 saat geliştirme |
 | **Pro** | 10.000 | Plus + adanmış proje yöneticisi + aylık 10 saat geliştirme |
 
-Hosting yönetimi her pakete dahildir. Yıllık ödeme = 2 ay ücretsiz.
-
----
-
-## Ödeme Planı
-
-Toplam **₺204.000** (KDV dahil) için kademeli ödeme:
-
-| Aşama | Tutar (TL) | Tetikleyici |
-|---|---:|---|
-| 1. Sözleşme + kickoff | 51.000 | Sözleşme imzası |
-| 2. Discovery + tasarım onayı | 30.600 | Müşteri tasarımı onaylar |
-| 3. Backend + admin core teslim | 30.600 | Müşteri demo |
-| 4. Mobile core + görev akışı | 40.800 | Müşteri demo |
-| 5. UAT geçişi | 30.600 | Müşteri UAT'ı geçer |
-| 6. App store yayın | 20.400 | İki app yayında |
-
-Ek modüller bağımsız olarak %50 ön ödeme + %50 teslim modeliyle ücretlendirilir.
+Hosting yönetimi her pakete dahildir.
 
 ---
 
@@ -142,23 +129,10 @@ Sözleşme imzası sonrası:
 
 ---
 
-## Varsayımlar
-
-1. Müşteri tarafı tek karar verici — her faz sonu onay 5 iş günü içinde verilir.
-2. Mobile app React Native ile tek codebase yazılır.
-3. Türkçe tek dil (çoklu dil için ek modül).
-4. KVKK metinleri ve sözleşmeler müşteri (avukat) tarafından sağlanır veya hukuki içerik açısından onaylanır.
-5. BASE'de manuel IBAN havale; otomatik ödeme akışı için ek modül.
-6. Sicil doğrulama BASE'de manuel admin onayı; otomatik için ek modül.
-7. Premium tier garanti koşulu: yıl içinde <3 görev → abonelik 1 yıl ücretsiz uzatılır.
-8. Marka adı, logo ve yasal sayfaların hukuki onayı müşteri sorumluluğundadır.
-
----
-
 ## İletişim
 
 | | |
 |---|---|
-| **AIFINEX** | _TBD_ |
-| **E-posta** | _TBD_ |
-| **Telefon** | _TBD_ |
+| **AIFINEX** | Salih Karademir |
+| **E-posta** | salih.karademir@aifinex.com |
+| **Telefon** | 0 850 302 84 32 |
